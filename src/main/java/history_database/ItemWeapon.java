@@ -34,7 +34,7 @@ public class ItemWeapon extends FoundItem
 
     @Override
     public String toString() {
-        return "ItemWeapon{" +
+        return "Weapon{" +
                 "weaponType='" + weaponType + '\'' +
                 ", material='" + material + '\'' +
                 ", weight=" + weight +

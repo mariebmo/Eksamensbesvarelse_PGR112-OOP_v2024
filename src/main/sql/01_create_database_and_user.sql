@@ -1,0 +1,5 @@
+CREATE DATABASE exam_PGR112v24;
+
+CREATE USER 'exam'@'localhost' IDENTIFIED BY 'exam2024';
+
+GRANT ALL PRIVILEGES ON exam_PGR112v24.* TO 'exam'@'localhost';

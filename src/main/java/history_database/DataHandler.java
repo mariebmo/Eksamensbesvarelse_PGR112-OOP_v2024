@@ -5,10 +5,11 @@ import java.util.ArrayList;
 
 /*
     Klasse som skal håndtere all datahåndtering til og fra database og
-    data fra scanner
- */
+    data inn fra fra filscanner
+*/
 
 public class DataHandler {
+
     //# Fields
     private Database database;
     private FileScanner input;
@@ -18,7 +19,7 @@ public class DataHandler {
 
 
     //# Constructor
-    public DataHandler(Database database) {
+    DataHandler(Database database) {
         this.database = database;
         input = new FileScanner(database);
     }
@@ -38,7 +39,7 @@ public class DataHandler {
     }
 
     // Methods for adding new data to database
-    public void addNewDataToDatabase() {
+    void addNewDataToDatabase() {
         checkIfPersonIsDuplicateThenAdd();
         checkIfMuseumIsDuplicateThenAdd();
         checkIfCoinIsDuplicateThenAdd();
@@ -487,13 +488,13 @@ public class DataHandler {
     }
 
     // Methods for loading data from database into program at start
-    public void loadDataFromDatabaseAtStart() {
+    void loadDataFromDatabaseAtStart() {
         loadPeopleFromDatabase();
         loadMuseumsFromDatabase();
-        loadItemsFromDatabase();
+        loadAllItemsFromDatabase();
     }
 
-    public void loadPeopleFromDatabase() {
+    private void loadPeopleFromDatabase() {
         try (Connection connection = database.getConnection()) {
 
             peopleInDatabase.clear();
@@ -518,7 +519,7 @@ public class DataHandler {
             throw new RuntimeException(e);
         }
     }
-    public void loadMuseumsFromDatabase() {
+    private void loadMuseumsFromDatabase() {
         try (Connection connection = database.getConnection()) {
 
             museumsInDatabase.clear();
@@ -542,8 +543,7 @@ public class DataHandler {
             throw new RuntimeException(e);
         }
     }
-
-    public void loadItemsFromDatabase() {
+    private void loadAllItemsFromDatabase() {
         itemsInDatabase.clear();
         loadCoinsFromDatabase();
         loadWeaponsFromDatabase();

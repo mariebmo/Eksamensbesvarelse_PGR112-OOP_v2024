@@ -17,8 +17,10 @@ public class RelicsProgram
     public void startProgram() {
         System.out.println("Program is booting up...");
 
-        data.loadDataFromDatabaseAtStart();
         data.parseFile();
+        System.out.println("");
+        data.loadDataFromDatabaseAtStart();
+        System.out.println("");
         data.addNewDataToDatabase();
 
         System.out.println("Program finished loading, starting now...");

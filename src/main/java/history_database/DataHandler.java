@@ -8,8 +8,7 @@ import java.util.ArrayList;
     data fra scanner
  */
 
-public class DataHandler
-{
+public class DataHandler {
     //# Fields
     private Database database;
     private FileScanner input;
@@ -32,9 +31,11 @@ public class DataHandler
     public void addNewDataToDatabase() {
         addNewPeopleToDatabaseIfNotDuplicate();
         addNewMuseumsToDatabaseIfNotDuplicate();
+        addNewCoinToMuseumIfNotDuplicate();
+        addNewWeaponToMuseumIfNotDuplicate();
     }
 
-    public void addNewPeopleToDatabaseIfNotDuplicate() {
+    private void addNewPeopleToDatabaseIfNotDuplicate() {
         var people = input.getPeople();
 
         for (Person person : people) {
@@ -55,7 +56,8 @@ public class DataHandler
 
         }
     }
-    public void addNewMuseumsToDatabaseIfNotDuplicate() {
+
+    private void addNewMuseumsToDatabaseIfNotDuplicate() {
         var museums = input.getMuseums();
 
         for (Museum museum : museums) {
@@ -77,7 +79,51 @@ public class DataHandler
         }
     }
 
-    private boolean addPersonToDatabase (Person person) {
+    private void addNewCoinToMuseumIfNotDuplicate() {
+        var coins = input.getCoins();
+
+        for (ItemCoin coin : coins) {
+            var duplicate = false;
+
+            for (FoundItem databaseCoin : itemsInDatabase) {
+                if (databaseCoin.id == coin.id) {
+                    duplicate = true;
+                    break;
+                }
+            }
+
+            if (!duplicate) {
+                if (addCoinToDatabase(coin)) {
+                    System.out.println(STR."//$ Coin with ID:\{coin.id} added to database");
+                }
+            }
+
+        }
+    }
+
+    private void addNewWeaponToMuseumIfNotDuplicate() {
+        var weapons = input.getWeapons();
+
+        for (ItemWeapon weapon : weapons) {
+            var duplicate = false;
+
+            for (FoundItem databaseWeapon : itemsInDatabase) {
+                if (databaseWeapon.id == weapon.id) {
+                    duplicate = true;
+                    break;
+                }
+            }
+
+            if (!duplicate) {
+                if (addWeaponToDatabase(weapon)) {
+                    System.out.println(STR."//$ Weapon with ID:\{weapon.id} added to database");
+                }
+            }
+
+        }
+    }
+
+    private boolean addPersonToDatabase(Person person) {
         try (Connection connection = database.getConnection()) {
 
             String query = "INSERT INTO person VALUES(?, ?, ?, ?)";
@@ -101,7 +147,8 @@ public class DataHandler
         }
         return false;
     }
-    private boolean addMuseumToDatabase (Museum museum) {
+
+    private boolean addMuseumToDatabase(Museum museum) {
         try (Connection connection = database.getConnection()) {
 
             String query = "INSERT INTO museum VALUES(?, ?, ?)";
@@ -125,6 +172,73 @@ public class DataHandler
         return false;
     }
 
+    private boolean addCoinToDatabase(ItemCoin coin) {
+        try (Connection connection = database.getConnection()) {
+
+            String query = "INSERT INTO mynt VALUES(?, ?, ?, ?, ?, ?, ?, ?)";
+
+            PreparedStatement statement = connection.prepareStatement(query);
+
+            statement.setInt(1, coin.id);
+            statement.setString(2, coin.placeDiscovered);
+            statement.setInt(3, coin.finder_id);
+            statement.setString(4, coin.dateFound);
+            statement.setInt(5, coin.expectedYearOfCreation);
+            if (coin.museum_id != 0) {
+                statement.setInt(6, coin.museum_id);
+            } else {
+                statement.setNull(6, Types.INTEGER);
+            }
+            statement.setInt(7, coin.getDiameter());
+            statement.setString(8, coin.getMetal());
+
+            int update = statement.executeUpdate();
+
+            if (update > 0) {
+                return true;
+            }
+
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+    private boolean addWeaponToDatabase(ItemWeapon weapon) {
+        try (Connection connection = database.getConnection()) {
+
+            String query = "INSERT INTO vaapen VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?)";
+
+            PreparedStatement statement = connection.prepareStatement(query);
+
+            statement.setInt(1, weapon.id);
+            statement.setString(2, weapon.placeDiscovered);
+            statement.setInt(3, weapon.finder_id);
+            statement.setString(4, weapon.dateFound);
+            statement.setInt(5, weapon.expectedYearOfCreation);
+            if (weapon.museum_id != 0) {
+                statement.setInt(6, weapon.museum_id);
+            } else {
+                statement.setNull(6, Types.INTEGER);
+            }
+            statement.setString(7, weapon.getWeaponType());
+            statement.setString(8, weapon.getMaterial());
+            statement.setInt(9, weapon.getWeight());
+
+            int update = statement.executeUpdate();
+
+            if (update > 0) {
+                return true;
+            }
+
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
     // Methods for printing info about items in Database (that is saved in local memory)
     void printAllCoins() {
         System.out.println("*** MYNTER FUNNET ***");
@@ -134,7 +248,7 @@ public class DataHandler
                 ItemCoin coin = (ItemCoin) item;
 
                 System.out.print(STR."Mynt #\{count} fra rundt år \{coin.expectedYearOfCreation} (ID: \{coin.id}). ");
-                System.out.println(STR."Funnet av \{getPersonNameBasedOnID(coin.finder_id)} i \{coin.dateFound.substring(0,4)}.");
+                System.out.println(STR."Funnet av \{getPersonNameBasedOnID(coin.finder_id)} i \{coin.dateFound.substring(0, 4)}.");
                 System.out.println(STR."- \{coin.getDiameter()} mm i diameter og lagd av \{coin.getMetal().toLowerCase()}.");
                 if (coin.museum_id != 0) {
                     System.out.println(STR."- For øyeblikket utstilt på \{getMuseumNameBasedOnID(coin.museum_id)}.");
@@ -147,6 +261,7 @@ public class DataHandler
             }
         }
     }
+
     void printAllJewelry() {
         System.out.println("*** SMYKKER FUNNET ***");
         int count = 1;
@@ -156,7 +271,7 @@ public class DataHandler
                 ItemJewelry jewelry = (ItemJewelry) item;
 
                 System.out.print(STR."Smykke #\{count}: \{jewelry.getJewelryType()} fra rundt år \{jewelry.expectedYearOfCreation} (ID: \{jewelry.id}). ");
-                System.out.println(STR."Funnet av \{getPersonNameBasedOnID(jewelry.finder_id)} i \{jewelry.dateFound.substring(0,4)}.");
+                System.out.println(STR."Funnet av \{getPersonNameBasedOnID(jewelry.finder_id)} i \{jewelry.dateFound.substring(0, 4)}.");
                 System.out.println(STR."- Verdi estimert til \{jewelry.getValueEstimate()} kroner (se bilde: \{jewelry.getImageFilename()}).");
                 if (jewelry.museum_id != 0) {
                     System.out.println(STR."- For øyeblikket utstilt på \{getMuseumNameBasedOnID(jewelry.museum_id)}.");
@@ -168,6 +283,7 @@ public class DataHandler
             }
         }
     }
+
     void printAllWeapons() {
         System.out.println("*** VÅPEN FUNNET ***");
         int count = 1;
@@ -177,7 +293,7 @@ public class DataHandler
                 ItemWeapon weapon = (ItemWeapon) item;
 
                 System.out.print(STR."Våpen #\{count}: \{weapon.getWeaponType()} fra rundt år \{weapon.expectedYearOfCreation} (ID: \{weapon.id}). ");
-                System.out.println(STR."Funnet av \{getPersonNameBasedOnID(weapon.finder_id)} i \{weapon.dateFound.substring(0,4)}.");
+                System.out.println(STR."Funnet av \{getPersonNameBasedOnID(weapon.finder_id)} i \{weapon.dateFound.substring(0, 4)}.");
                 System.out.println(STR."- Lagd av \{weapon.getMaterial()} og veier \{weapon.getWeight()} gram.");
                 if (weapon.museum_id != 0) {
                     System.out.println(STR."- For øyeblikket utstilt på \{getMuseumNameBasedOnID(weapon.museum_id)}.");
@@ -218,11 +334,12 @@ public class DataHandler
             case "Våpen" -> printItemIfWeapon(item);
         }
     }
+
     private void printItemIfCoin(FoundItem item) {
         ItemCoin coin = (ItemCoin) item;
 
         System.out.print(STR."• Mynt fra rundt år \{coin.expectedYearOfCreation} (ID: \{coin.id}). ");
-        System.out.println(STR."Funnet av \{getPersonNameBasedOnID(coin.finder_id)} i \{coin.dateFound.substring(0,4)}.");
+        System.out.println(STR."Funnet av \{getPersonNameBasedOnID(coin.finder_id)} i \{coin.dateFound.substring(0, 4)}.");
         System.out.println(STR."- \{coin.getDiameter()} mm i diameter og lagd av \{coin.getMetal().toLowerCase()}.");
         if (coin.museum_id != 0) {
             System.out.println(STR."- For øyeblikket utstilt på \{getMuseumNameBasedOnID(coin.museum_id)}.");
@@ -230,11 +347,12 @@ public class DataHandler
             System.out.println("- Ikke utstilt på museum for øyeblikket. Så ligger i en boks i kjelleren på klubbhuset.");
         }
     }
+
     private void printItemIfWeapon(FoundItem item) {
         ItemWeapon weapon = (ItemWeapon) item;
 
         System.out.print(STR."• \{weapon.getWeaponType()} fra rundt år \{weapon.expectedYearOfCreation} (ID: \{weapon.id}). ");
-        System.out.println(STR."Funnet av \{getPersonNameBasedOnID(weapon.finder_id)} i \{weapon.dateFound.substring(0,4)}.");
+        System.out.println(STR."Funnet av \{getPersonNameBasedOnID(weapon.finder_id)} i \{weapon.dateFound.substring(0, 4)}.");
         System.out.println(STR."- Lagd av \{weapon.getMaterial()} og veier \{weapon.getWeight()} gram.");
         if (weapon.museum_id != 0) {
             System.out.println(STR."- For øyeblikket utstilt på \{getMuseumNameBasedOnID(weapon.museum_id)}.");
@@ -242,11 +360,12 @@ public class DataHandler
             System.out.println("- Ikke utstilt på museum for øyeblikket. Så ligger i safen på klubbhuset.");
         }
     }
+
     private void printItemIfJewelry(FoundItem item) {
         ItemJewelry jewelry = (ItemJewelry) item;
 
         System.out.print(STR."• Smykke: \{jewelry.getJewelryType()} fra rundt år \{jewelry.expectedYearOfCreation} (ID: \{jewelry.id}). ");
-        System.out.println(STR."Funnet av \{getPersonNameBasedOnID(jewelry.finder_id)} i \{jewelry.dateFound.substring(0,4)}.");
+        System.out.println(STR."Funnet av \{getPersonNameBasedOnID(jewelry.finder_id)} i \{jewelry.dateFound.substring(0, 4)}.");
         System.out.println(STR."- Verdi estimert til \{jewelry.getValueEstimate()} kroner (se bilde: \{jewelry.getImageFilename()}).");
         if (jewelry.museum_id != 0) {
             System.out.println(STR."- For øyeblikket utstilt på \{getMuseumNameBasedOnID(jewelry.museum_id)}.");
@@ -275,12 +394,13 @@ public class DataHandler
 
     private String getMuseumNameBasedOnID(int museum_id) {
         for (Museum museum : museumsInDatabase) {
-            if(museum.id() == museum_id) {
+            if (museum.id() == museum_id) {
                 return museum.name();
             }
         }
         return null;
     }
+
     private int getNumberOfCoinsFound() {
         int count = 0;
         for (FoundItem item : itemsInDatabase) {
@@ -290,6 +410,7 @@ public class DataHandler
         }
         return count;
     }
+
     private int getNumberOfWeaponsFound() {
         int count = 0;
         for (FoundItem item : itemsInDatabase) {
@@ -299,6 +420,7 @@ public class DataHandler
         }
         return count;
     }
+
     private int getNumberOfJewelryFound() {
         int count = 0;
         for (FoundItem item : itemsInDatabase) {
@@ -368,27 +490,61 @@ public class DataHandler
     }
 
     public void loadItemsFromDatabase() {
+        loadCoinsFromDatabase();
+        loadWeaponsFromDatabase();
+        loadJewelryFromDatabase();
+    }
+    private void loadCoinsFromDatabase() {
         try (Connection connection = database.getConnection()) {
 
+            // Load coins
             Statement statementC = connection.createStatement();
 
-            // Load coins
             ResultSet resultCoins = statementC.executeQuery("SELECT * FROM mynt");
 
             while (resultCoins.next()) {
-                var coin = new ItemCoin(
-                        resultCoins.getInt("id"),
-                        resultCoins.getString("funnsted"),
-                        resultCoins.getInt("finner_id"),
-                        resultCoins.getString("funntidspunkt"),
-                        resultCoins.getInt("antatt_aarstall"),
-                        resultCoins.getInt("museum_id"),
-                        "Mynt",
-                        resultCoins.getInt("diameter"),
-                        resultCoins.getString("metall")
-                );
+                String tempMuseumID = null;
+                ItemCoin coin;
+                try {
+                    tempMuseumID = resultCoins.getString("museum_id");
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+                if (tempMuseumID == null) {
+                    coin = new ItemCoin(
+                            resultCoins.getInt("id"),
+                            resultCoins.getString("funnsted"),
+                            resultCoins.getInt("finner_id"),
+                            resultCoins.getString("funntidspunkt"),
+                            resultCoins.getInt("antatt_aarstall"),
+                            0,
+                            "Mynt",
+                            resultCoins.getInt("diameter"),
+                            resultCoins.getString("metall")
+                    );
+                } else {
+                    coin = new ItemCoin(
+                            resultCoins.getInt("id"),
+                            resultCoins.getString("funnsted"),
+                            resultCoins.getInt("finner_id"),
+                            resultCoins.getString("funntidspunkt"),
+                            resultCoins.getInt("antatt_aarstall"),
+                            resultCoins.getInt("museum_id"),
+                            "Mynt",
+                            resultCoins.getInt("diameter"),
+                            resultCoins.getString("metall")
+                    );
+                }
+
                 itemsInDatabase.add(coin);
             }
+        } catch (SQLException e) {
+            System.out.println("Could not load items from database");
+            throw new RuntimeException(e);
+        }
+    }
+    private void loadWeaponsFromDatabase() {
+        try (Connection connection = database.getConnection()) {
 
             // Load weapons
             Statement statementW = connection.createStatement();
@@ -396,23 +552,50 @@ public class DataHandler
             ResultSet resultWeapons = statementW.executeQuery("SELECT * FROM vaapen");
 
             while (resultWeapons.next()) {
-                var weapon = new ItemWeapon(
-                        resultWeapons.getInt("id"),
-                        resultWeapons.getString("funnsted"),
-                        resultWeapons.getInt("finner_id"),
-                        resultWeapons.getString("funntidspunkt"),
-                        resultWeapons.getInt("antatt_aarstall"),
-                        resultWeapons.getInt("museum_id"),
-                        "Våpen",
-                        resultWeapons.getString("type"),
-                        resultWeapons.getString("materiale"),
-                        resultWeapons.getInt("vekt")
-                );
-
-                System.out.println(weapon);
+                String tempMuseumID = null;
+                ItemWeapon weapon;
+                try {
+                    tempMuseumID = resultWeapons.getString("museum_id");
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+                if (tempMuseumID == null) {
+                    weapon = new ItemWeapon(
+                            resultWeapons.getInt("id"),
+                            resultWeapons.getString("funnsted"),
+                            resultWeapons.getInt("finner_id"),
+                            resultWeapons.getString("funntidspunkt"),
+                            resultWeapons.getInt("antatt_aarstall"),
+                            0,
+                            "Våpen",
+                            resultWeapons.getString("type"),
+                            resultWeapons.getString("materiale"),
+                            resultWeapons.getInt("vekt")
+                    );
+                } else {
+                    weapon = new ItemWeapon(
+                            resultWeapons.getInt("id"),
+                            resultWeapons.getString("funnsted"),
+                            resultWeapons.getInt("finner_id"),
+                            resultWeapons.getString("funntidspunkt"),
+                            resultWeapons.getInt("antatt_aarstall"),
+                            resultWeapons.getInt("museum_id"),
+                            "Våpen",
+                            resultWeapons.getString("type"),
+                            resultWeapons.getString("materiale"),
+                            resultWeapons.getInt("vekt")
+                    );
+                }
 
                 itemsInDatabase.add(weapon);
             }
+        } catch (SQLException e) {
+            System.out.println("Could not load items from database");
+            throw new RuntimeException(e);
+        }
+    }
+    private void loadJewelryFromDatabase() {
+        try (Connection connection = database.getConnection()) {
 
             // Load jewelry
             Statement statementJ = connection.createStatement();
@@ -420,31 +603,52 @@ public class DataHandler
             ResultSet resultJewelry = statementJ.executeQuery("SELECT * FROM smykke");
 
             while (resultJewelry.next()) {
-                var jewelry = new ItemJewelry(
-                        resultJewelry.getInt("id"),
-                        resultJewelry.getString("funnsted"),
-                        resultJewelry.getInt("finner_id"),
-                        resultJewelry.getString("funntidspunkt"),
-                        resultJewelry.getInt("antatt_aarstall"),
-                        resultJewelry.getInt("museum_id"),
-                        "Smykke",
-                        resultJewelry.getString("type"),
-                        resultJewelry.getInt("verdiestimat"),
-                        resultJewelry.getString("filnavn")
-                );
+                String tempMuseumID = null;
+                ItemJewelry jewelry;
 
-                System.out.println(jewelry);
+                try {
+                    tempMuseumID = resultJewelry.getString("museum_id");
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+
+                if (tempMuseumID == null) {
+                    jewelry = new ItemJewelry(
+                            resultJewelry.getInt("id"),
+                            resultJewelry.getString("funnsted"),
+                            resultJewelry.getInt("finner_id"),
+                            resultJewelry.getString("funntidspunkt"),
+                            resultJewelry.getInt("antatt_aarstall"),
+                            0,
+                            "Smykke",
+                            resultJewelry.getString("type"),
+                            resultJewelry.getInt("verdiestimat"),
+                            resultJewelry.getString("filnavn")
+                    );
+                } else {
+                    jewelry = new ItemJewelry(
+                            resultJewelry.getInt("id"),
+                            resultJewelry.getString("funnsted"),
+                            resultJewelry.getInt("finner_id"),
+                            resultJewelry.getString("funntidspunkt"),
+                            resultJewelry.getInt("antatt_aarstall"),
+                            resultJewelry.getInt("museum_id"),
+                            "Smykke",
+                            resultJewelry.getString("type"),
+                            resultJewelry.getInt("verdiestimat"),
+                            resultJewelry.getString("filnavn")
+                    );
+                }
 
                 itemsInDatabase.add(jewelry);
             }
 
 
-            System.out.println(STR."//$ \{itemsInDatabase.size()} items loaded from database");
+            System.out.println(STR."\{itemsInDatabase.size()} items loaded from database");
 
         } catch (SQLException e) {
             System.out.println("Could not load items from database");
             throw new RuntimeException(e);
         }
     }
-
 }

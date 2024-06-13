@@ -16,5 +16,7 @@ public class RelicsProgram
     //# Methods
     public void startProgram() {
         System.out.println("Program is running");
+
+        data.parseFile();
     }
 }

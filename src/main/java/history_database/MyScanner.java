@@ -1,6 +1,4 @@
-package history_database.data_in_out;
-
-import history_database.Database;
+package history_database;
 
 import java.io.File;
 import java.util.Scanner;

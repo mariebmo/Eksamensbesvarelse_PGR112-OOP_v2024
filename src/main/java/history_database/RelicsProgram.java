@@ -77,8 +77,15 @@ public class RelicsProgram
     }
 
     private void printInfoBasedOnNumbers() {
-        System.out.println("Savner du Visual Analytics eller?...");
-        System.out.println("Programmet avsluttes... Velkommen tilbake!");
+        printNumbersAboutItems();
+
+        printDivider();
+
+        showMenu();
+    }
+
+    private void printNumbersAboutItems() {
+        data.printNumbersAboutItems();
     }
 
     private void printAllCoins() {

@@ -146,6 +146,15 @@ public class DataHandler
         }
     }
 
+    void printNumbersAboutItems() {
+        System.out.println("*** INFO RUNDT ANTALL GJENSTANDER FUNNET ***");
+        System.out.println(STR."- Totalt har vi funnet \{itemsInDatabase.size()} gjenstander siden vi startet gruppen.");
+        System.out.println(STR."--> Vi har funnet \{getNumberOfCoinsFound()} mynter.");
+        System.out.println(STR."--> Vi har funnet \{getNumberOfWeaponsFound()} våpen.");
+        System.out.println(STR."--> Vi har funnet \{getNumberOfJewelryFound()} smykker.");
+        System.out.println("");
+    }
+
 
     private String getPersonNameBasedOnID(int person_id) {
         for (Person person : peopleInDatabase) {
@@ -163,6 +172,33 @@ public class DataHandler
             }
         }
         return null;
+    }
+    private int getNumberOfCoinsFound() {
+        int count = 0;
+        for (FoundItem item : itemsInDatabase) {
+            if (item instanceof ItemCoin) {
+                count++;
+            }
+        }
+        return count;
+    }
+    private int getNumberOfWeaponsFound() {
+        int count = 0;
+        for (FoundItem item : itemsInDatabase) {
+            if (item instanceof ItemWeapon) {
+                count++;
+            }
+        }
+        return count;
+    }
+    private int getNumberOfJewelryFound() {
+        int count = 0;
+        for (FoundItem item : itemsInDatabase) {
+            if (item instanceof ItemJewelry) {
+                count++;
+            }
+        }
+        return count;
     }
 
     // Methods for loading data from database into program at start

@@ -52,8 +52,7 @@ public class FileScanner
     //# Methods
     void readFile() {
         if (text.exists() && text.isFile()) {
-            System.out.println("Found the file");
-
+            System.out.println("...datafile is found and being parsed for updates...");
             parseFile();
 
         } else {
@@ -72,8 +71,6 @@ public class FileScanner
             int numberOfPeople = 0;
 
             int numberOfMuseums = 0;
-
-            System.out.println("\n----------");
 
             while (input.hasNextLine()) {
                 int id;
@@ -211,6 +208,7 @@ public class FileScanner
                         }
                     }
 
+                    // Legger til nytt smykke
                     if (type.equals("Smykke")) {
                         jewelryType = input.nextLine();
                         jewelryValue = convertToNumber(input.nextLine());
@@ -230,9 +228,7 @@ public class FileScanner
                             continue;
                         }
                     }
-
                 }
-
                 previousLine = line;
             }
 
@@ -241,12 +237,6 @@ public class FileScanner
             throw new RuntimeException(e);
         }
 
-        System.out.println("\n//$ Parsing of Funn.txt is done.");
-        System.out.println(STR."//$ \{people.size()} people added from .txt-file");
-        System.out.println(STR."//$ \{museums.size()} museums added from .txt-file");
-        System.out.println(STR."//$ \{coins.size()} coins added from .txt-file");
-        System.out.println(STR."//$ \{weapons.size()} weapons added from .txt-file");
-        System.out.println(STR."//$ \{trinkets.size()} pieces of jewelry added from .txt-file");
     }
 
     int convertToNumber(String text) {

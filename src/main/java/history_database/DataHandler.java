@@ -308,7 +308,7 @@ public class DataHandler {
             if (item instanceof ItemCoin) {
                 ItemCoin coin = (ItemCoin) item;
 
-                System.out.print(STR."Mynt #\{count} fra rundt år \{coin.expectedYearOfCreation} (ID: \{coin.id}). ");
+                System.out.print(STR."Mynt #\{count}/\{getNumberOfCoinsFound()} fra rundt år \{coin.expectedYearOfCreation} (ID: \{coin.id}). ");
                 System.out.println(STR."Funnet av \{getPersonNameBasedOnID(coin.finder_id)} i \{coin.dateFound.substring(0, 4)}.");
                 System.out.println(STR."- \{coin.getDiameter()} mm i diameter og lagd av \{coin.getMetal().toLowerCase()}.");
                 if (coin.museum_id != 0) {
@@ -330,7 +330,7 @@ public class DataHandler {
             if (item instanceof ItemJewelry) {
                 ItemJewelry jewelry = (ItemJewelry) item;
 
-                System.out.print(STR."Smykke #\{count}: \{jewelry.getJewelryType()} fra rundt år \{jewelry.expectedYearOfCreation} (ID: \{jewelry.id}). ");
+                System.out.print(STR."Smykke #\{count}/\{getNumberOfJewelryFound()}: \{jewelry.getJewelryType()} fra rundt år \{jewelry.expectedYearOfCreation} (ID: \{jewelry.id}). ");
                 System.out.println(STR."Funnet av \{getPersonNameBasedOnID(jewelry.finder_id)} i \{jewelry.dateFound.substring(0, 4)}.");
                 System.out.println(STR."- Verdi estimert til \{jewelry.getValueEstimate()} kroner (se bilde: \{jewelry.getImageFilename()}).");
                 if (jewelry.museum_id != 0) {
@@ -351,7 +351,7 @@ public class DataHandler {
             if (item instanceof ItemWeapon) {
                 ItemWeapon weapon = (ItemWeapon) item;
 
-                System.out.print(STR."Våpen #\{count}: \{weapon.getWeaponType()} fra rundt år \{weapon.expectedYearOfCreation} (ID: \{weapon.id}). ");
+                System.out.print(STR."Våpen #\{count}/\{getNumberOfWeaponsFound()}: \{weapon.getWeaponType()} fra rundt år \{weapon.expectedYearOfCreation} (ID: \{weapon.id}). ");
                 System.out.println(STR."Funnet av \{getPersonNameBasedOnID(weapon.finder_id)} i \{weapon.dateFound.substring(0, 4)}.");
                 System.out.println(STR."- Lagd av \{weapon.getMaterial()} og veier \{weapon.getWeight()} gram.");
                 if (weapon.museum_id != 0) {
@@ -393,7 +393,6 @@ public class DataHandler {
             case "Våpen" -> printItemIfWeapon(item);
         }
     }
-
     private void printItemIfCoin(FoundItem item) {
         ItemCoin coin = (ItemCoin) item;
 
@@ -434,7 +433,7 @@ public class DataHandler {
     void printNumbersAboutItems() {
         System.out.println("*** INFO RUNDT ANTALL GJENSTANDER FUNNET ***");
         System.out.println(STR."• Gruppen vår har \{peopleInDatabase.size()} hobby-arkiologer som har funnet gjenstander.");
-        System.out.println(STR."• Gjenstander vi har funnet er utstilt på hele \{museumsInDatabase.size()} forskjellige museum");
+        System.out.println(STR."• Gjenstander vi har funnet er utstilt på hele \{museumsInDatabase.size()} forskjellige museum.");
         System.out.println(STR."• Totalt har vi funnet \{itemsInDatabase.size()} gjenstander siden vi startet gruppen.");
         System.out.println(STR."--> Vi har funnet \{getNumberOfCoinsFound()} mynter.");
         System.out.println(STR."--> Vi har funnet \{getNumberOfWeaponsFound()} våpen.");

@@ -15,27 +15,24 @@ public class RelicsProgram
 
     //# Methods
     public void startProgram() {
-        System.out.println("Program is booting up...");
+        System.out.println("...Program is booting up...");
 
         data.parseFile();
-        System.out.println("");
         data.loadDataFromDatabaseAtStart();
-        System.out.println("");
         data.addNewDataToDatabase();
-        System.out.println("");
         data.loadDataFromDatabaseAtStart();
 
-        System.out.println(STR."\{data.getAmountOfPeopleInDatabase()} people loaded from database...");
-        System.out.println(STR."\{data.getAmountOfMuseumsInDatabase()} museums loaded from database...");
-        System.out.println(STR."\{data.getAmountOfItemsInDatabase()} items loaded from database...");
+        System.out.println(STR."...\{data.getAmountOfPeopleInDatabase()} people loaded from database...");
+        System.out.println(STR."...\{data.getAmountOfMuseumsInDatabase()} museums loaded from database...");
+        System.out.println(STR."...\{data.getAmountOfItemsInDatabase()} items loaded from database...");
 
         System.out.println("Program finished loading, starting now...");
-        printDivider();
 
         showMenu();
     }
 
     private void showMenu() {
+        printDivider();
         System.out.println("*** HOVEDMENY ***");
         System.out.println("1. Se informasjon om alle gjenstander funnet.");
         System.out.println("2. Se informasjon om alle gjenstander over en viss alder.");
@@ -74,9 +71,8 @@ public class RelicsProgram
         printAllJewelry();
         printAllWeapons();
 
-        printDivider();
-
         printArrowUpText();
+        System.out.println(STR." Info om \{data.getAmountOfItemsInDatabase()} gjenstander printet ut.");
         showMenu();
     }
 
@@ -90,18 +86,16 @@ public class RelicsProgram
 
         data.printItemsOlderThanX(userInput);
 
-        printDivider();
-
         printArrowUpText();
+        System.out.println();
         showMenu();
     }
 
     private void menu3_printInfoBasedOnNumbers() {
         printNumbersAboutItems();
 
-        printDivider();
-
         printArrowUpText();
+        System.out.println();
         showMenu();
     }
 
@@ -121,7 +115,7 @@ public class RelicsProgram
     }
 
     private void printArrowUpText() {
-        System.out.println("---> Se resultatet ditt over ↑");
+        System.out.print("---> Se resultatet ditt over ↑");
     }
 
     /*

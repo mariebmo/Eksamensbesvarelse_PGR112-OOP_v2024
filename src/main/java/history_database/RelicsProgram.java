@@ -79,7 +79,6 @@ public class RelicsProgram
         System.out.println(STR." Info om \{data.getAmountOfItemsInDatabase()} gjenstander printet ut.");
         showMenu();
     }
-
     private void menu2_printInfoBasedOnAge() {
         System.out.println("*** GJENSTANDER OVER EN VISS ALDER ***");
         System.out.println("Denne menyen er viser alle gjenstander eldre enn et bestemt årstall.");
@@ -94,7 +93,6 @@ public class RelicsProgram
         System.out.println();
         showMenu();
     }
-
     private void menu3_printInfoBasedOnNumbers() {
         printNumbersAboutItems();
 
@@ -117,11 +115,9 @@ public class RelicsProgram
     private void printDivider() {
         System.out.println("\n----------\n");
     }
-
     private void printArrowUpText() {
         System.out.print("---> Se resultatet ditt over ↑");
     }
-
     /*
        Denne koden er basert på getNumberFromTerminalInput() fra foreleser Marcus Alexander Dahl i prosjektet Terminal
        Link: https://github.com/kristiania/PGR112v24/blob/main/code/solutions/database/terminal/src/Terminal.java

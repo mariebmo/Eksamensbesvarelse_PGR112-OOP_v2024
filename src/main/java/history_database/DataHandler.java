@@ -1,9 +1,6 @@
 package history_database;
 
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.sql.*;
 import java.util.ArrayList;
 
 /*
@@ -31,13 +28,57 @@ public class DataHandler
         input.readFile();
     }
 
+    // Methods for adding new data to database
+    public void addNewDataToDatabase() {
+        addNewPeopleToDatabase();
+    }
+
     public void addNewPeopleToDatabase() {
         var people = input.getPeople();
 
         for (Person person : people) {
+            var duplicate = false;
 
+            for (Person databasePerson : peopleInDatabase) {
+
+                if (databasePerson.name().equals(person.name())) {
+                    duplicate = true;
+                    break;
+                }
+            }
+
+            if (!duplicate) {
+                if (addPersonToDatabase(person)) {
+                    System.out.println(STR."//$ \{person.name()} added to database");
+                }
+            }
 
         }
+    }
+
+    private boolean addPersonToDatabase (Person person) {
+        try (Connection connection = database.getConnection()) {
+
+            String query = "INSERT INTO person VALUES(?, ?, ?, ?)";
+
+            PreparedStatement statement = connection.prepareStatement(query);
+
+            statement.setInt(1, person.id());
+            statement.setString(2, person.name());
+            statement.setInt(3, person.phone_number());
+            statement.setString(4, person.email());
+
+            int update = statement.executeUpdate();
+
+            if (update > 0) {
+                return true;
+            }
+
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
     }
 
     // Methods for loading data from database into program at start

@@ -10,7 +10,7 @@ import java.util.Scanner;
     https://github.com/kristiania/PGR112v24/code/lectures/_24/Progress.java
  */
 
-public class MyScanner
+public class FileScanner
 {
     //# Fields
     private Database database;
@@ -23,7 +23,7 @@ public class MyScanner
 
 
     // Constructor
-    public MyScanner(Database database) {
+    public FileScanner(Database database) {
         this.database = database;
         this.text = new File("src/main/resources/funn.txt");
     }

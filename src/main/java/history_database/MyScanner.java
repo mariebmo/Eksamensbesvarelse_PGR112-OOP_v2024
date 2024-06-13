@@ -55,8 +55,8 @@ public class MyScanner
         try (var input = new Scanner(text)) {
 
             String line;
+            String previousLine = "none";
             String topic = "none";
-            boolean foundTopic = false;
             int counter = 0;
 
             int id;
@@ -86,23 +86,36 @@ public class MyScanner
 
                     System.out.println(STR."\n//$ Found new topic \"\{topic}\"");
 
+                    previousLine = line;
+
                     continue;
                 }
 
                 // Alt som omhandler personer i txt-filen
                 if (topic.equals("Personer")) {
-                    System.out.println(STR."#\{counter} Vi har en linje med personinfo her");
+                    if (previousLine.equals("Personer")) {
+                        previousLine = line;
+                        continue;
+                    }
+                    // System.out.println(STR."#\{counter} Vi har en linje med personinfo her");
                 }
 
                 // Alt som omhandler museum i txt-filen
                 if (topic.equals("Museer")) {
-                    System.out.println(STR."#\{counter} Vi har en linje med museumsinfo her");
+                    System.out.println(line);
+                    if (previousLine.equals("Museer:")) {
+                        previousLine = line;
+                        continue;
+                    }
+                    // System.out.println(STR."#\{counter} Vi har en linje med museumsinfo her");
                 }
 
                 //# Alt som omhandler gjenstander i txt-filen
                 if (topic.equals("Funn")) {
-                    System.out.println(STR."#\{counter} Vi har en linje med info om en gjenstand her");
+                    // System.out.println(STR."#\{counter} Vi har en linje med info om en gjenstand her");
                 }
+
+                previousLine = line;
             }
 
         } catch (FileNotFoundException e) {

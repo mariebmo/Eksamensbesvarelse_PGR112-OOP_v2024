@@ -29,13 +29,14 @@ public class DataHandler {
 
     // Methods for adding new data to database
     public void addNewDataToDatabase() {
-        addNewPeopleToDatabaseIfNotDuplicate();
-        addNewMuseumsToDatabaseIfNotDuplicate();
-        addNewCoinToMuseumIfNotDuplicate();
-        addNewWeaponToMuseumIfNotDuplicate();
+        checkIfPersonIsDuplicateThenAdd();
+        checkIfMuseumIsDuplicateThenAdd();
+        checkIfCoinIsDuplicateThenAdd();
+        checkIfWeaponIsDuplicateThenAdd();
+        checkIfJewelryIsDuplicateThenAdd();
     }
 
-    private void addNewPeopleToDatabaseIfNotDuplicate() {
+    private void checkIfPersonIsDuplicateThenAdd() {
         var people = input.getPeople();
 
         for (Person person : people) {
@@ -56,8 +57,7 @@ public class DataHandler {
 
         }
     }
-
-    private void addNewMuseumsToDatabaseIfNotDuplicate() {
+    private void checkIfMuseumIsDuplicateThenAdd() {
         var museums = input.getMuseums();
 
         for (Museum museum : museums) {
@@ -79,7 +79,7 @@ public class DataHandler {
         }
     }
 
-    private void addNewCoinToMuseumIfNotDuplicate() {
+    private void checkIfCoinIsDuplicateThenAdd() {
         var coins = input.getCoins();
 
         for (ItemCoin coin : coins) {
@@ -100,8 +100,7 @@ public class DataHandler {
 
         }
     }
-
-    private void addNewWeaponToMuseumIfNotDuplicate() {
+    private void checkIfWeaponIsDuplicateThenAdd() {
         var weapons = input.getWeapons();
 
         for (ItemWeapon weapon : weapons) {
@@ -117,6 +116,27 @@ public class DataHandler {
             if (!duplicate) {
                 if (addWeaponToDatabase(weapon)) {
                     System.out.println(STR."//$ Weapon with ID:\{weapon.id} added to database");
+                }
+            }
+
+        }
+    }
+    private void checkIfJewelryIsDuplicateThenAdd() {
+        var jewelryDB = input.getTrinkets();
+
+        for (ItemJewelry jewelry : jewelryDB) {
+            var duplicate = false;
+
+            for (FoundItem databaseJewelry : itemsInDatabase) {
+                if (databaseJewelry.id == jewelry.id) {
+                    duplicate = true;
+                    break;
+                }
+            }
+
+            if (!duplicate) {
+                if (addJewelryToDatabase(jewelry)) {
+                    System.out.println(STR."//$ Jewelry with ID:\{jewelry.id} added to database");
                 }
             }
 
@@ -147,7 +167,6 @@ public class DataHandler {
         }
         return false;
     }
-
     private boolean addMuseumToDatabase(Museum museum) {
         try (Connection connection = database.getConnection()) {
 
@@ -204,7 +223,6 @@ public class DataHandler {
         }
         return false;
     }
-
     private boolean addWeaponToDatabase(ItemWeapon weapon) {
         try (Connection connection = database.getConnection()) {
 
@@ -225,6 +243,39 @@ public class DataHandler {
             statement.setString(7, weapon.getWeaponType());
             statement.setString(8, weapon.getMaterial());
             statement.setInt(9, weapon.getWeight());
+
+            int update = statement.executeUpdate();
+
+            if (update > 0) {
+                return true;
+            }
+
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+    private boolean addJewelryToDatabase(ItemJewelry jewelry) {
+        try (Connection connection = database.getConnection()) {
+
+            String query = "INSERT INTO smykke VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?)";
+
+            PreparedStatement statement = connection.prepareStatement(query);
+
+            statement.setInt(1, jewelry.id);
+            statement.setString(2, jewelry.placeDiscovered);
+            statement.setInt(3, jewelry.finder_id);
+            statement.setString(4, jewelry.dateFound);
+            statement.setInt(5, jewelry.expectedYearOfCreation);
+            if (jewelry.museum_id != 0) {
+                statement.setInt(6, jewelry.museum_id);
+            } else {
+                statement.setNull(6, Types.INTEGER);
+            }
+            statement.setString(7, jewelry.getJewelryType());
+            statement.setInt(8, jewelry.getValueEstimate());
+            statement.setString(9, jewelry.getImageFilename());
 
             int update = statement.executeUpdate();
 
@@ -261,7 +312,6 @@ public class DataHandler {
             }
         }
     }
-
     void printAllJewelry() {
         System.out.println("*** SMYKKER FUNNET ***");
         int count = 1;
@@ -283,7 +333,6 @@ public class DataHandler {
             }
         }
     }
-
     void printAllWeapons() {
         System.out.println("*** VÅPEN FUNNET ***");
         int count = 1;
@@ -347,7 +396,6 @@ public class DataHandler {
             System.out.println("- Ikke utstilt på museum for øyeblikket. Så ligger i en boks i kjelleren på klubbhuset.");
         }
     }
-
     private void printItemIfWeapon(FoundItem item) {
         ItemWeapon weapon = (ItemWeapon) item;
 
@@ -360,7 +408,6 @@ public class DataHandler {
             System.out.println("- Ikke utstilt på museum for øyeblikket. Så ligger i safen på klubbhuset.");
         }
     }
-
     private void printItemIfJewelry(FoundItem item) {
         ItemJewelry jewelry = (ItemJewelry) item;
 
@@ -376,7 +423,9 @@ public class DataHandler {
 
     void printNumbersAboutItems() {
         System.out.println("*** INFO RUNDT ANTALL GJENSTANDER FUNNET ***");
-        System.out.println(STR."- Totalt har vi funnet \{itemsInDatabase.size()} gjenstander siden vi startet gruppen.");
+        System.out.println(STR."• Gruppen vår har \{peopleInDatabase.size()} hobby-arkiologer som har funnet gjenstander.");
+        System.out.println(STR."• Gjenstander vi har funnet er utstilt på hele \{museumsInDatabase.size()} forskjellige museum");
+        System.out.println(STR."• Totalt har vi funnet \{itemsInDatabase.size()} gjenstander siden vi startet gruppen.");
         System.out.println(STR."--> Vi har funnet \{getNumberOfCoinsFound()} mynter.");
         System.out.println(STR."--> Vi har funnet \{getNumberOfWeaponsFound()} våpen.");
         System.out.println(STR."--> Vi har funnet \{getNumberOfJewelryFound()} smykker.");
@@ -441,6 +490,8 @@ public class DataHandler {
     public void loadPeopleFromDatabase() {
         try (Connection connection = database.getConnection()) {
 
+            peopleInDatabase.clear();
+
             Statement statement = connection.createStatement();
 
             ResultSet resultSet = statement.executeQuery("SELECT * FROM person");
@@ -467,6 +518,8 @@ public class DataHandler {
     public void loadMuseumsFromDatabase() {
         try (Connection connection = database.getConnection()) {
 
+            museumsInDatabase.clear();
+
             Statement statement = connection.createStatement();
 
             ResultSet resultSet = statement.executeQuery("SELECT * FROM museum");
@@ -490,6 +543,7 @@ public class DataHandler {
     }
 
     public void loadItemsFromDatabase() {
+        itemsInDatabase.clear();
         loadCoinsFromDatabase();
         loadWeaponsFromDatabase();
         loadJewelryFromDatabase();

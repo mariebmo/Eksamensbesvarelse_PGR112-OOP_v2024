@@ -64,10 +64,11 @@ public class RelicsProgram
 
         printAllCoins();
         printAllJewelry();
+        printAllWeapons();
 
         printDivider();
 
-        System.out.println("Programmet avsluttes... Velkommen tilbake!");
+        showMenu();
     }
 
     private void printInfoBasedOnAge() {
@@ -84,6 +85,7 @@ public class RelicsProgram
         data.printAllCoins();
     }
     private void printAllJewelry() { data.printAllJewelry(); }
+    private void printAllWeapons() { data.printAllWeapons(); }
 
     //
     private void printDivider() {

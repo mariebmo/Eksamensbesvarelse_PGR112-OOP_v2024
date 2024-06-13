@@ -103,7 +103,6 @@ public class DataHandler
             }
         }
     }
-
     void printAllJewelry() {
         System.out.println("*** SMYKKER FUNNET ***");
         int count = 1;
@@ -122,13 +121,29 @@ public class DataHandler
                 }
                 System.out.println("");
                 count++;
-
             }
         }
     }
-
     void printAllWeapons() {
+        System.out.println("*** VÅPEN FUNNET ***");
+        int count = 1;
 
+        for (FoundItem item : itemsInDatabase) {
+            if (item instanceof ItemWeapon) {
+                ItemWeapon weapon = (ItemWeapon) item;
+
+                System.out.print(STR."Smykke #\{count}, \{weapon.getWeaponType()} fra rundt år \{weapon.expectedYearOfCreation} (ID: \{weapon.id}). ");
+                System.out.println(STR."Funnet av \{getPersonNameBasedOnID(weapon.finder_id)} i \{weapon.dateFound.substring(0,4)}.");
+                System.out.println(STR."- Lagd av \{weapon.getMaterial()} og veier \{weapon.getWeight()} gram.");
+                if (weapon.museum_id != 0) {
+                    System.out.println(STR."- For øyeblikket utstilt på \{getMuseumNameBasedOnID(weapon.museum_id)}.");
+                } else {
+                    System.out.println("- Ikke utstilt på museum for øyeblikket. Så ligger i safen på klubbhuset.");
+                }
+                System.out.println("");
+                count++;
+            }
+        }
     }
 
 

@@ -60,7 +60,12 @@ public class RelicsProgram
     }
 
     private void printInfoAboutAllItems() {
-        System.out.println("Oversikt over alt vi har... Det er mye det...");
+        System.out.println("Oversikt over alt vi har... Det er mye det...\n");
+
+        printAllCoins();
+
+        printDivider();
+
         System.out.println("Programmet avsluttes... Velkommen tilbake!");
     }
 
@@ -72,6 +77,10 @@ public class RelicsProgram
     private void printInfoBasedOnNumbers() {
         System.out.println("Savner du Visual Analytics eller?...");
         System.out.println("Programmet avsluttes... Velkommen tilbake!");
+    }
+
+    private void printAllCoins() {
+        data.printAllCoins();
     }
 
     //

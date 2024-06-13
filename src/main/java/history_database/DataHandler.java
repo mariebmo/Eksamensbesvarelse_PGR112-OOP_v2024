@@ -81,6 +81,16 @@ public class DataHandler
         return false;
     }
 
+    // Methods for printing info about items in Database (that is saved in local memory)
+    void printAllCoins() {
+        for (FoundItem item : itemsInDatabase) {
+
+            if (item.type.equals("Mynt")) {
+                System.out.println(item);
+            }
+        }
+    }
+
     // Methods for loading data from database into program at start
     public void loadDataFromDatabaseAtStart() {
         loadPeopleFromDatabase();

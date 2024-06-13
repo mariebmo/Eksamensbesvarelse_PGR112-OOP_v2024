@@ -40,15 +40,15 @@ public class RelicsProgram
         switch (userInput) {
             case 1 -> {
                 printDivider();
-                printInfoAboutAllItems();
+                menu1_printInfoAboutAllItems();
             }
             case 2 -> {
                 printDivider();
-                printInfoBasedOnAge();
+                menu2_printInfoBasedOnAge();
             }
             case 3 -> {
                 printDivider();
-                printInfoBasedOnNumbers();
+                menu3_printInfoBasedOnNumbers();
             }
             case 4 -> {
                 printDivider();
@@ -59,7 +59,7 @@ public class RelicsProgram
         }
     }
 
-    private void printInfoAboutAllItems() {
+    private void menu1_printInfoAboutAllItems() {
         System.out.println("Oversikt over alt vi har... Det er mye det...\n");
 
         printAllCoins();
@@ -71,12 +71,19 @@ public class RelicsProgram
         showMenu();
     }
 
-    private void printInfoBasedOnAge() {
-        System.out.println("Du vil bare se på gamle ting...");
-        System.out.println("Programmet avsluttes... Velkommen tilbake!");
+    private void menu2_printInfoBasedOnAge() {
+        System.out.println("*** GJENSTANDER OVER EN VISS ALDER ***");
+        System.out.println("Denne menyen er viser alle gjenstander eldre enn et bestemt årstall.");
+        System.out.println("Hvilket årstall velger du?: ");
+
+        int userInput = checkInputIfValidNumber(2024);
+
+        data.printItemsOlderThanX(userInput);
+
+        showMenu();
     }
 
-    private void printInfoBasedOnNumbers() {
+    private void menu3_printInfoBasedOnNumbers() {
         printNumbersAboutItems();
 
         printDivider();
@@ -94,7 +101,7 @@ public class RelicsProgram
     private void printAllJewelry() { data.printAllJewelry(); }
     private void printAllWeapons() { data.printAllWeapons(); }
 
-    //
+    // methods that do small odd jobs related to the menu system
     private void printDivider() {
         System.out.println("\n----------\n");
     }

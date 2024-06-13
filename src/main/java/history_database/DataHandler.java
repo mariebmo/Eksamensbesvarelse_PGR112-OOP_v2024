@@ -111,7 +111,7 @@ public class DataHandler
             if (item instanceof ItemJewelry) {
                 ItemJewelry jewelry = (ItemJewelry) item;
 
-                System.out.print(STR."Smykke #\{count}, \{jewelry.getJewelryType()} fra rundt år \{jewelry.expectedYearOfCreation} (ID: \{jewelry.id}). ");
+                System.out.print(STR."Smykke #\{count}: \{jewelry.getJewelryType()} fra rundt år \{jewelry.expectedYearOfCreation} (ID: \{jewelry.id}). ");
                 System.out.println(STR."Funnet av \{getPersonNameBasedOnID(jewelry.finder_id)} i \{jewelry.dateFound.substring(0,4)}.");
                 System.out.println(STR."- Verdi estimert til \{jewelry.getValueEstimate()} kroner (se bilde: \{jewelry.getImageFilename()}).");
                 if (jewelry.museum_id != 0) {
@@ -132,7 +132,7 @@ public class DataHandler
             if (item instanceof ItemWeapon) {
                 ItemWeapon weapon = (ItemWeapon) item;
 
-                System.out.print(STR."Smykke #\{count}, \{weapon.getWeaponType()} fra rundt år \{weapon.expectedYearOfCreation} (ID: \{weapon.id}). ");
+                System.out.print(STR."Våpen #\{count}: \{weapon.getWeaponType()} fra rundt år \{weapon.expectedYearOfCreation} (ID: \{weapon.id}). ");
                 System.out.println(STR."Funnet av \{getPersonNameBasedOnID(weapon.finder_id)} i \{weapon.dateFound.substring(0,4)}.");
                 System.out.println(STR."- Lagd av \{weapon.getMaterial()} og veier \{weapon.getWeight()} gram.");
                 if (weapon.museum_id != 0) {
@@ -146,6 +146,70 @@ public class DataHandler
         }
     }
 
+    void printItemsOlderThanX(int chosenYear) {
+        ArrayList<FoundItem> tempItems = new ArrayList<>();
+
+        for (FoundItem item : itemsInDatabase) {
+            if (item.getExpectedYearOfCreation() < chosenYear) {
+                tempItems.add(item);
+            }
+        }
+
+        System.out.println(STR."Vi har funnet totalt funnet \{tempItems.size()} gjenstander som er eldre enn \{chosenYear}:");
+        int counter = 1;
+        for (FoundItem oldItem : tempItems) {
+            printItemSwitch(oldItem);
+            System.out.println("");
+        }
+    }
+
+    private void printItemSwitch(FoundItem item) {
+        switch (item.type) {
+            case "Mynt" -> printItemIfCoin(item);
+            case "Smykke" -> printItemIfJewelry(item);
+            case "Våpen" -> printItemIfWeapon(item);
+        }
+    }
+    private void printItemIfCoin(FoundItem item) {
+        ItemCoin coin = (ItemCoin) item;
+
+        System.out.print(STR."Mynt fra rundt år \{coin.expectedYearOfCreation} (ID: \{coin.id}). ");
+        System.out.println(STR."Funnet av \{getPersonNameBasedOnID(coin.finder_id)} i \{coin.dateFound.substring(0,4)}.");
+        System.out.println(STR."- \{coin.getDiameter()} mm i diameter og lagd av \{coin.getMetal().toLowerCase()}.");
+        if (coin.museum_id != 0) {
+            System.out.println(STR."- For øyeblikket utstilt på \{getMuseumNameBasedOnID(coin.museum_id)}.");
+        } else {
+            System.out.println("- Ikke utstilt på museum for øyeblikket. Så ligger i en boks i kjelleren på klubbhuset.");
+        }
+        System.out.println("");
+    }
+    private void printItemIfWeapon(FoundItem item) {
+        ItemWeapon weapon = (ItemWeapon) item;
+
+        System.out.print(STR."\{weapon.getWeaponType()} fra rundt år \{weapon.expectedYearOfCreation} (ID: \{weapon.id}). ");
+        System.out.println(STR."Funnet av \{getPersonNameBasedOnID(weapon.finder_id)} i \{weapon.dateFound.substring(0,4)}.");
+        System.out.println(STR."- Lagd av \{weapon.getMaterial()} og veier \{weapon.getWeight()} gram.");
+        if (weapon.museum_id != 0) {
+            System.out.println(STR."- For øyeblikket utstilt på \{getMuseumNameBasedOnID(weapon.museum_id)}.");
+        } else {
+            System.out.println("- Ikke utstilt på museum for øyeblikket. Så ligger i safen på klubbhuset.");
+        }
+        System.out.println("");
+    }
+    private void printItemIfJewelry(FoundItem item) {
+        ItemJewelry jewelry = (ItemJewelry) item;
+
+        System.out.print(STR."Smykke: \{jewelry.getJewelryType()} fra rundt år \{jewelry.expectedYearOfCreation} (ID: \{jewelry.id}). ");
+        System.out.println(STR."Funnet av \{getPersonNameBasedOnID(jewelry.finder_id)} i \{jewelry.dateFound.substring(0,4)}.");
+        System.out.println(STR."- Verdi estimert til \{jewelry.getValueEstimate()} kroner (se bilde: \{jewelry.getImageFilename()}).");
+        if (jewelry.museum_id != 0) {
+            System.out.println(STR."- For øyeblikket utstilt på \{getMuseumNameBasedOnID(jewelry.museum_id)}.");
+        } else {
+            System.out.println("- Ikke utstilt på museum for øyeblikket. Så ligger i safen på klubbhuset.");
+        }
+        System.out.println("");
+    }
+
     void printNumbersAboutItems() {
         System.out.println("*** INFO RUNDT ANTALL GJENSTANDER FUNNET ***");
         System.out.println(STR."- Totalt har vi funnet \{itemsInDatabase.size()} gjenstander siden vi startet gruppen.");
@@ -154,7 +218,6 @@ public class DataHandler
         System.out.println(STR."--> Vi har funnet \{getNumberOfJewelryFound()} smykker.");
         System.out.println("");
     }
-
 
     private String getPersonNameBasedOnID(int person_id) {
         for (Person person : peopleInDatabase) {

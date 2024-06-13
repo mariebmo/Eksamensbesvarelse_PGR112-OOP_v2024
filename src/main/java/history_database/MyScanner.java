@@ -74,12 +74,23 @@ public class MyScanner
                 String email;
                 String location;
 
-                String placeDiscovered;
+                String coordinates;
                 int finder_id;
                 String dateFound;
                 int expectedYearOfCreation;
                 int museum_id;
                 String type;
+
+                int coinDiameter;
+                String coinMetal;
+
+                String weaponType;
+                String weaponMaterial;
+                int weaponWeight;
+
+                String jewelryType;
+                int jewelryValue;
+                String jewelryImagePath;
 
                 counter++;
                 line = input.nextLine();
@@ -141,7 +152,81 @@ public class MyScanner
 
                 //# Alt som omhandler gjenstander i txt-filen
                 if (topic.equals("Funn")) {
-                    // System.out.println(STR."#\{counter} Vi har en linje med info om en gjenstand her");
+
+                    id = convertToNumber(line);
+                    coordinates = input.nextLine();
+                    finder_id = convertToNumber(input.nextLine());
+                    dateFound = input.nextLine();
+                    expectedYearOfCreation = convertToNumber(input.nextLine());
+                    String possibleMuseum = input.nextLine();
+                    if (possibleMuseum.isEmpty()) {
+                        museum_id = 0;
+                    } else {
+                        museum_id = convertToNumber(possibleMuseum);
+                    }
+                    type = input.nextLine();
+
+                    // Legger til ny mynt
+                    if (type.equals("Mynt")) {
+                        coinDiameter = convertToNumber(input.nextLine());
+                        coinMetal = input.nextLine();
+
+                        ItemCoin coin;
+
+                        if (museum_id == 0) {
+                            coin = new ItemCoin(id,coordinates,finder_id,dateFound,expectedYearOfCreation,type,coinDiameter,coinMetal);
+                        } else {
+                            coin = new ItemCoin(id,coordinates,finder_id,dateFound,expectedYearOfCreation,museum_id,type,coinDiameter,coinMetal);
+                        }
+
+                        coins.add(coin);
+
+                        if (input.nextLine().contains("-")) {
+                            continue;
+                        }
+                    }
+
+                    // Legger til nytt våpen
+                    if (type.equals("Våpen")) {
+                        weaponType = input.nextLine();
+                        weaponMaterial = input.nextLine();
+                        weaponWeight = convertToNumber(input.nextLine());
+
+                        ItemWeapon weapon;
+
+                        if (museum_id == 0) {
+                            weapon = new ItemWeapon(id,coordinates,finder_id,dateFound,expectedYearOfCreation, type, weaponType, weaponMaterial, weaponWeight);
+                        } else {
+                            weapon = new ItemWeapon(id,coordinates,finder_id,dateFound,expectedYearOfCreation,museum_id,type, weaponType, weaponMaterial, weaponWeight);
+                        }
+
+                        weapons.add(weapon);
+
+                        if (input.nextLine().contains("-")) {
+                            continue;
+                        }
+                    }
+
+                    if (type.equals("Smykke")) {
+                        jewelryType = input.nextLine();
+                        jewelryValue = convertToNumber(input.nextLine());
+                        jewelryImagePath = input.nextLine();
+
+                        ItemJewelry jewelry;
+
+                        if (museum_id == 0) {
+                            jewelry = new ItemJewelry(id,coordinates,finder_id,dateFound,expectedYearOfCreation, type, jewelryType, jewelryValue, jewelryImagePath);
+                        } else {
+                            jewelry = new ItemJewelry(id,coordinates,finder_id,dateFound,expectedYearOfCreation,museum_id,type, jewelryType, jewelryValue, jewelryImagePath);
+                        }
+
+                        trinkets.add(jewelry);
+
+                        if (input.nextLine().contains("-")) {
+                            continue;
+                        }
+                    }
+
                 }
 
                 previousLine = line;
@@ -155,6 +240,9 @@ public class MyScanner
         System.out.println("\n//$ Parsing of Funn.txt is done.");
         System.out.println(STR."//$ \{people.size()} people added from .txt-file");
         System.out.println(STR."//$ \{museums.size()} museums added from .txt-file");
+        System.out.println(STR."//$ \{coins.size()} coins added from .txt-file");
+        System.out.println(STR."//$ \{weapons.size()} weapons added from .txt-file");
+        System.out.println(STR."//$ \{trinkets.size()} pieces of jewelry added from .txt-file");
     }
 
     int convertToNumber(String text) {

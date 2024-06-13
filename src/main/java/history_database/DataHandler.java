@@ -1,3 +1,4 @@
+package history_database;
 
 /*
     Klasse som skal håndtere all datahåndtering til og fra database og

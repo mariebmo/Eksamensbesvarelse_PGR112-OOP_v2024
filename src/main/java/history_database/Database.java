@@ -1,3 +1,5 @@
+package history_database;
+
 import com.mysql.cj.jdbc.Driver;
 
 import java.io.FileInputStream;

@@ -73,7 +73,7 @@ public class MyScanner
 
             int numberOfMuseums = 0;
 
-            System.out.println("----------");
+            System.out.println("\n----------");
 
             while (input.hasNextLine()) {
                 int id;
@@ -106,8 +106,6 @@ public class MyScanner
                 // sjekker om det er en overskrift basert på om linjen slutter på ":"
                 if (line.contains(":")) {
                     topic = line.replace(":", "");
-
-                    System.out.println(STR."\n//$ Found new topic \"\{topic}\"");
 
                     previousLine = line;
 
@@ -152,8 +150,6 @@ public class MyScanner
                     location = input.nextLine();
 
                     var museum = new Museum(id, name, location);
-
-                    // System.out.println(STR."Museum #\{museum.id()} lagt til (\{museum.name()}, \{museum.location()})");
 
                     museums.add(museum);
                 }

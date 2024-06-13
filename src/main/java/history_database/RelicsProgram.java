@@ -68,6 +68,7 @@ public class RelicsProgram
 
         printDivider();
 
+        printArrowUpText();
         showMenu();
     }
 
@@ -77,9 +78,13 @@ public class RelicsProgram
         System.out.println("Hvilket årstall velger du?: ");
 
         int userInput = checkInputIfValidNumber(2024);
+        System.out.println("");
 
         data.printItemsOlderThanX(userInput);
 
+        printDivider();
+
+        printArrowUpText();
         showMenu();
     }
 
@@ -88,6 +93,7 @@ public class RelicsProgram
 
         printDivider();
 
+        printArrowUpText();
         showMenu();
     }
 
@@ -104,6 +110,10 @@ public class RelicsProgram
     // methods that do small odd jobs related to the menu system
     private void printDivider() {
         System.out.println("\n----------\n");
+    }
+
+    private void printArrowUpText() {
+        System.out.println("---> Se resultatet ditt over ↑");
     }
 
     /*

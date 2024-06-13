@@ -30,17 +30,17 @@ public class DataHandler
 
     // Methods for adding new data to database
     public void addNewDataToDatabase() {
-        addNewPeopleToDatabase();
+        addNewPeopleToDatabaseIfNotDuplicate();
+        addNewMuseumsToDatabaseIfNotDuplicate();
     }
 
-    public void addNewPeopleToDatabase() {
+    public void addNewPeopleToDatabaseIfNotDuplicate() {
         var people = input.getPeople();
 
         for (Person person : people) {
             var duplicate = false;
 
             for (Person databasePerson : peopleInDatabase) {
-
                 if (databasePerson.name().equals(person.name())) {
                     duplicate = true;
                     break;
@@ -50,6 +50,27 @@ public class DataHandler
             if (!duplicate) {
                 if (addPersonToDatabase(person)) {
                     System.out.println(STR."//$ \{person.name()} added to database");
+                }
+            }
+
+        }
+    }
+    public void addNewMuseumsToDatabaseIfNotDuplicate() {
+        var museums = input.getMuseums();
+
+        for (Museum museum : museums) {
+            var duplicate = false;
+
+            for (Museum databaseMuseum : museumsInDatabase) {
+                if (databaseMuseum.name().equals(museum.name())) {
+                    duplicate = true;
+                    break;
+                }
+            }
+
+            if (!duplicate) {
+                if (addMuseumToDatabase(museum)) {
+                    System.out.println(STR."//$ \{museum.name()} added to database");
                 }
             }
 
@@ -67,6 +88,29 @@ public class DataHandler
             statement.setString(2, person.name());
             statement.setInt(3, person.phone_number());
             statement.setString(4, person.email());
+
+            int update = statement.executeUpdate();
+
+            if (update > 0) {
+                return true;
+            }
+
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+    private boolean addMuseumToDatabase (Museum museum) {
+        try (Connection connection = database.getConnection()) {
+
+            String query = "INSERT INTO museum VALUES(?, ?, ?)";
+
+            PreparedStatement statement = connection.prepareStatement(query);
+
+            statement.setInt(1, museum.id());
+            statement.setString(2, museum.name());
+            statement.setString(3, museum.location());
 
             int update = statement.executeUpdate();
 

@@ -55,8 +55,9 @@ public class MyScanner
         try (var input = new Scanner(text)) {
 
             String line;
-            String topic;
+            String topic = "none";
             boolean foundTopic = false;
+            int counter = 0;
 
             int id;
 
@@ -76,22 +77,40 @@ public class MyScanner
             System.out.println("----------");
 
             while (input.hasNextLine()) {
+                counter++;
                 line = input.nextLine();
                 // System.out.println(line);
 
                 if (line.contains(":")) {
                     topic = line.replace(":", "");
 
-                    System.out.println(STR."Found new topic \"\{topic}\"");
+                    System.out.println(STR."\n//$ Found new topic \"\{topic}\"");
+
+                    continue;
+                }
+
+                // Alt som omhandler personer i txt-filen
+                if (topic.equals("Personer")) {
+                    System.out.println(STR."#\{counter} Vi har en linje med personinfo her");
+                }
+
+                // Alt som omhandler museum i txt-filen
+                if (topic.equals("Museer")) {
+                    System.out.println(STR."#\{counter} Vi har en linje med museumsinfo her");
+                }
+
+                //# Alt som omhandler gjenstander i txt-filen
+                if (topic.equals("Funn")) {
+                    System.out.println(STR."#\{counter} Vi har en linje med info om en gjenstand her");
                 }
             }
 
         } catch (FileNotFoundException e) {
-            System.out.println("Something went wrong during parsing of the .txt-file...");
+            System.out.println("//$ Something went wrong during parsing of the .txt-file...");
             throw new RuntimeException(e);
         }
 
-        System.out.println("Parsing of Funn.txt is done.");
+        System.out.println("\n//$ Parsing of Funn.txt is done.");
     }
 
 }

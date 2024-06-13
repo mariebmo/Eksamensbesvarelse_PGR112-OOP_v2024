@@ -1,5 +1,6 @@
-CREATE DATABASE exam_PGR112v24;
+DROP DATABASE IF EXISTS Funn;
+CREATE DATABASE Funn;
 
 CREATE USER 'exam'@'localhost' IDENTIFIED BY 'exam2024';
 
-GRANT ALL PRIVILEGES ON exam_PGR112v24.* TO 'exam'@'localhost';
+GRANT ALL PRIVILEGES ON Funn.* TO 'exam'@'localhost';

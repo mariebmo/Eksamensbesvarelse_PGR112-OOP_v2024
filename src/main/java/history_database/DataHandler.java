@@ -27,6 +27,16 @@ public class DataHandler {
         input.readFile();
     }
 
+    int getAmountOfPeopleInDatabase() {
+        return peopleInDatabase.size();
+    }
+    int getAmountOfMuseumsInDatabase() {
+        return museumsInDatabase.size();
+    }
+    int getAmountOfItemsInDatabase() {
+        return itemsInDatabase.size();
+    }
+
     // Methods for adding new data to database
     public void addNewDataToDatabase() {
         checkIfPersonIsDuplicateThenAdd();
@@ -440,7 +450,6 @@ public class DataHandler {
         }
         return null;
     }
-
     private String getMuseumNameBasedOnID(int museum_id) {
         for (Museum museum : museumsInDatabase) {
             if (museum.id() == museum_id) {
@@ -459,7 +468,6 @@ public class DataHandler {
         }
         return count;
     }
-
     private int getNumberOfWeaponsFound() {
         int count = 0;
         for (FoundItem item : itemsInDatabase) {
@@ -469,7 +477,6 @@ public class DataHandler {
         }
         return count;
     }
-
     private int getNumberOfJewelryFound() {
         int count = 0;
         for (FoundItem item : itemsInDatabase) {
@@ -507,14 +514,11 @@ public class DataHandler {
                 peopleInDatabase.add(person);
             }
 
-            System.out.println(STR."//$ \{peopleInDatabase.size()} people loaded from database");
-
         } catch (SQLException e) {
             System.out.println("Could not load people from database");
             throw new RuntimeException(e);
         }
     }
-
     public void loadMuseumsFromDatabase() {
         try (Connection connection = database.getConnection()) {
 
@@ -534,10 +538,8 @@ public class DataHandler {
                 museumsInDatabase.add(museum);
             }
 
-            System.out.println(STR."//$ \{museumsInDatabase.size()} museums loaded from database");
-
         } catch (SQLException e) {
-            System.out.println("Could not load people from database");
+            System.out.println("Could not load museums from database");
             throw new RuntimeException(e);
         }
     }
@@ -696,9 +698,6 @@ public class DataHandler {
 
                 itemsInDatabase.add(jewelry);
             }
-
-
-            System.out.println(STR."\{itemsInDatabase.size()} items loaded from database");
 
         } catch (SQLException e) {
             System.out.println("Could not load items from database");

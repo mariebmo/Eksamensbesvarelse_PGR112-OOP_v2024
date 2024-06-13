@@ -22,6 +22,12 @@ public class RelicsProgram
         data.loadDataFromDatabaseAtStart();
         System.out.println("");
         data.addNewDataToDatabase();
+        System.out.println("");
+        data.loadDataFromDatabaseAtStart();
+
+        System.out.println(STR."\{data.getAmountOfPeopleInDatabase()} people loaded from database...");
+        System.out.println(STR."\{data.getAmountOfMuseumsInDatabase()} museums loaded from database...");
+        System.out.println(STR."\{data.getAmountOfItemsInDatabase()} items loaded from database...");
 
         System.out.println("Program finished loading, starting now...");
         printDivider();

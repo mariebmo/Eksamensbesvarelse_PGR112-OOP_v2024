@@ -59,28 +59,30 @@ public class MyScanner
             String topic = "none";
             int counter = 0;
 
-            int id;
+            int numberOfPeople = 0;
 
-            String name;
-            int phone_number;
-            String email;
-
-            String location;
-
-            String placeDiscovered;
-            int finder_id;
-            String dateFound;
-            int expectedYearOfCreation;
-            int museum_id;
-            String type;
+            int numberOfMuseums = 0;
 
             System.out.println("----------");
 
             while (input.hasNextLine()) {
+                int id;
+                String name;
+                int phone_number;
+                String email;
+                String location;
+
+                String placeDiscovered;
+                int finder_id;
+                String dateFound;
+                int expectedYearOfCreation;
+                int museum_id;
+                String type;
+
                 counter++;
                 line = input.nextLine();
-                // System.out.println(line);
 
+                // sjekker om det er en overskrift basert på om linjen slutter på ":"
                 if (line.contains(":")) {
                     topic = line.replace(":", "");
 
@@ -93,18 +95,30 @@ public class MyScanner
 
                 // Alt som omhandler personer i txt-filen
                 if (topic.equals("Personer")) {
-                    if (previousLine.equals("Personer")) {
+
+                    // hopper over linjen med antall personer i listen
+                    if (previousLine.equals("Personer:") && numberOfPeople == 0) {
                         previousLine = line;
+                        numberOfPeople = Integer.parseInt(line);
                         continue;
                     }
-                    // System.out.println(STR."#\{counter} Vi har en linje med personinfo her");
+
+                    id = convertToNumber(line);
+                    name = input.nextLine();
+                    phone_number = convertToNumber(input.nextLine());
+                    email = input.nextLine();
+
+                    var person = new Person(id, name, phone_number, email);
+                    System.out.println(STR."Person \{person.id()} lagt til (\{person.name()})");
+
                 }
 
                 // Alt som omhandler museum i txt-filen
                 if (topic.equals("Museer")) {
-                    System.out.println(line);
-                    if (previousLine.equals("Museer:")) {
+
+                    if (previousLine.equals("Museer:") && numberOfMuseums == 0) {
                         previousLine = line;
+                        numberOfMuseums = Integer.parseInt(line);
                         continue;
                     }
                     // System.out.println(STR."#\{counter} Vi har en linje med museumsinfo her");
@@ -124,6 +138,10 @@ public class MyScanner
         }
 
         System.out.println("\n//$ Parsing of Funn.txt is done.");
+    }
+
+    int convertToNumber(String text) {
+        return Integer.parseInt(text);
     }
 
 }

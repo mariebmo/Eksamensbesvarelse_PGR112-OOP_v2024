@@ -37,9 +37,44 @@ public class RelicsProgram
 
         int userInput = checkInputIfValidNumber(4);
 
-
+        switch (userInput) {
+            case 1 -> {
+                printDivider();
+                printInfoAboutAllItems();
+            }
+            case 2 -> {
+                printDivider();
+                printInfoBasedOnAge();
+            }
+            case 3 -> {
+                printDivider();
+                printInfoBasedOnNumbers();
+            }
+            case 4 -> {
+                printDivider();
+                System.out.println("Programmet avsluttes... Velkommen tilbake!");
+                System.exit(0);
+            }
+            default -> showMenu();
+        }
     }
 
+    private void printInfoAboutAllItems() {
+        System.out.println("Oversikt over alt vi har... Det er mye det...");
+        System.out.println("Programmet avsluttes... Velkommen tilbake!");
+    }
+
+    private void printInfoBasedOnAge() {
+        System.out.println("Du vil bare se på gamle ting...");
+        System.out.println("Programmet avsluttes... Velkommen tilbake!");
+    }
+
+    private void printInfoBasedOnNumbers() {
+        System.out.println("Savner du Visual Analytics eller?...");
+        System.out.println("Programmet avsluttes... Velkommen tilbake!");
+    }
+
+    //
     private void printDivider() {
         System.out.println("\n----------\n");
     }
@@ -54,12 +89,12 @@ public class RelicsProgram
             if (userInput <= maxMenuNumber) {
                 return userInput;
             } else {
-                System.out.println(STR."Menyen har kun valg mellom 1-\{maxMenuNumber}. Prøv igjen: ");
+                System.out.print(STR."Menyen har kun menyvalg mellom 1-\{maxMenuNumber}. Prøv igjen: ");
 
                 return checkInputIfValidNumber(maxMenuNumber);
             }
         } catch (NumberFormatException e) {
-            System.out.println(STR."Menyen støtter kun tall mellom 1-\{maxMenuNumber}. Prøv igjen: ");
+            System.out.print(STR."Menyen støtter kun tall mellom 1-\{maxMenuNumber}. Prøv igjen: ");
 
             return checkInputIfValidNumber(maxMenuNumber);
         }

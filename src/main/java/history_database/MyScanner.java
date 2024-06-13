@@ -29,6 +29,14 @@ public class MyScanner
     }
 
     //# Getters
+    public ArrayList<Person> getPeople() {
+        return people;
+    }
+
+    public ArrayList<Museum> getMuseums() {
+        return museums;
+    }
+
     public ArrayList<ItemCoin> getCoins() {
         return coins;
     }

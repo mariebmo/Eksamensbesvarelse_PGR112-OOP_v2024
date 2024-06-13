@@ -24,6 +24,10 @@ public class ItemWeapon extends FoundItem
     }
 
     //# Getters
+    public String getWeaponType() {
+        return weaponType;
+    }
+
     public String getMaterial() {
         return material;
     }

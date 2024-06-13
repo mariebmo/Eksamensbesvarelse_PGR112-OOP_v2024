@@ -17,7 +17,7 @@ public class DataHandler
     }
 
     void parseFile() {
-        input.parseFile();
+        input.readFile();
     }
 
 }

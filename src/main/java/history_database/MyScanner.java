@@ -55,14 +55,35 @@ public class MyScanner
         try (var input = new Scanner(text)) {
 
             String line;
+            String topic;
+            boolean foundTopic = false;
+
+            int id;
+
+            String name;
+            int phone_number;
+            String email;
+
+            String location;
+
+            String placeDiscovered;
+            int finder_id;
+            String dateFound;
+            int expectedYearOfCreation;
+            int museum_id;
+            String type;
 
             System.out.println("----------");
+
             while (input.hasNextLine()) {
                 line = input.nextLine();
+                // System.out.println(line);
 
+                if (line.contains(":")) {
+                    topic = line.replace(":", "");
 
-
-                System.out.println(line);
+                    System.out.println(STR."Found new topic \"\{topic}\"");
+                }
             }
 
         } catch (FileNotFoundException e) {

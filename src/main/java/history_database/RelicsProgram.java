@@ -2,6 +2,10 @@ package history_database;
 
 import java.util.Scanner;
 
+/*
+    Klasse for å håndtere menysystemet og brukerinput gjennom terminalen
+ */
+
 public class RelicsProgram
 {
     //# Fields
@@ -122,7 +126,7 @@ public class RelicsProgram
        Denne koden er basert på getNumberFromTerminalInput() fra foreleser Marcus Alexander Dahl i prosjektet Terminal
        Link: https://github.com/kristiania/PGR112v24/blob/main/code/solutions/database/terminal/src/Terminal.java
      */
-    public int checkInputIfValidNumber(int maxMenuNumber) {
+    private int checkInputIfValidNumber(int maxMenuNumber) {
         try {
             int userInput = Integer.parseInt(input.nextLine());
             if (userInput <= maxMenuNumber) {

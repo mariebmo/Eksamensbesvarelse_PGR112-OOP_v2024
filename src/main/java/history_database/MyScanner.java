@@ -2,6 +2,7 @@ package history_database;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.util.ArrayList;
 import java.util.Scanner;
 
 /*
@@ -14,11 +15,28 @@ public class MyScanner
     //# Fields
     private Database database;
     private File text;
+    private ArrayList<ItemCoin> coins = new ArrayList<>();
+    private ArrayList<ItemWeapon> weapons = new ArrayList<>();
+    private ArrayList<ItemJewelry> trinkets = new ArrayList<>();
+
 
     // Constructor
     public MyScanner(Database database) {
         this.database = database;
         this.text = new File("src/main/resources/funn.txt");
+    }
+
+    //# Getters
+    public ArrayList<ItemCoin> getCoins() {
+        return coins;
+    }
+
+    public ArrayList<ItemWeapon> getWeapons() {
+        return weapons;
+    }
+
+    public ArrayList<ItemJewelry> getTrinkets() {
+        return trinkets;
     }
 
     //# Methods
@@ -38,8 +56,11 @@ public class MyScanner
 
             String line;
 
+            System.out.println("----------");
             while (input.hasNextLine()) {
                 line = input.nextLine();
+
+
 
                 System.out.println(line);
             }
@@ -51,6 +72,5 @@ public class MyScanner
 
         System.out.println("Parsing of Funn.txt is done.");
     }
-
 
 }

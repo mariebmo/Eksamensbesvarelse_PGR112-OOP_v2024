@@ -33,4 +33,20 @@ public class ItemJewelry extends FoundItem
     public String getImageFilename() {
         return imageFilename;
     }
+
+    @Override
+    public String toString() {
+        return "Jewelry{" +
+                "jewelryType='" + jewelryType + '\'' +
+                ", valueEstimate=" + valueEstimate +
+                ", imageFilename='" + imageFilename + '\'' +
+                ", id=" + id +
+                ", placeDiscovered='" + placeDiscovered + '\'' +
+                ", finder_id=" + finder_id +
+                ", dateFound='" + dateFound + '\'' +
+                ", expectedYearOfCreation=" + expectedYearOfCreation +
+                ", museum_id=" + museum_id +
+                ", type='" + type + '\'' +
+                '}';
+    }
 }

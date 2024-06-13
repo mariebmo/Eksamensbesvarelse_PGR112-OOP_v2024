@@ -26,4 +26,19 @@ public class ItemCoin extends FoundItem
     public String getMetal() {
         return metal;
     }
+
+    @Override
+    public String toString() {
+        return "Coin{" +
+                "diameter=" + diameter +
+                ", metal='" + metal + '\'' +
+                ", id=" + id +
+                ", placeDiscovered='" + placeDiscovered + '\'' +
+                ", finder_id=" + finder_id +
+                ", dateFound='" + dateFound + '\'' +
+                ", expectedYearOfCreation=" + expectedYearOfCreation +
+                ", museum_id=" + museum_id +
+                ", type='" + type + '\'' +
+                '}';
+    }
 }

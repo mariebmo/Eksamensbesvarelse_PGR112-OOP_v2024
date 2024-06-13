@@ -3,7 +3,7 @@ USE Funn;
 CREATE TABLE IF NOT EXISTS person (
     id INT PRIMARY KEY,
     navn VARCHAR(255),
-    tlf VARCHAR(12),
+    tlf INT,
     e_post VARCHAR(255)
 );
 

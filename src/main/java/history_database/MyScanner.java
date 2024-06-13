@@ -15,6 +15,8 @@ public class MyScanner
     //# Fields
     private Database database;
     private File text;
+    private ArrayList<Person> people = new ArrayList<>();
+    private ArrayList<Museum> museums = new ArrayList<>();
     private ArrayList<ItemCoin> coins = new ArrayList<>();
     private ArrayList<ItemWeapon> weapons = new ArrayList<>();
     private ArrayList<ItemJewelry> trinkets = new ArrayList<>();
@@ -103,25 +105,38 @@ public class MyScanner
                         continue;
                     }
 
+                    // henter ut info om personen
                     id = convertToNumber(line);
                     name = input.nextLine();
                     phone_number = convertToNumber(input.nextLine());
                     email = input.nextLine();
 
                     var person = new Person(id, name, phone_number, email);
-                    System.out.println(STR."Person \{person.id()} lagt til (\{person.name()})");
+                    // System.out.println(STR."Person \{person.id()} lagt til (\{person.name()}, \{person.phone_number()}, \{person.email()})");
 
+                    people.add(person);
                 }
 
                 // Alt som omhandler museum i txt-filen
                 if (topic.equals("Museer")) {
 
+                    // Hopper over linjen med antall museer i filen
                     if (previousLine.equals("Museer:") && numberOfMuseums == 0) {
                         previousLine = line;
                         numberOfMuseums = Integer.parseInt(line);
                         continue;
                     }
-                    // System.out.println(STR."#\{counter} Vi har en linje med museumsinfo her");
+
+                    // Henter ut info om museet
+                    id = convertToNumber(line);
+                    name = input.nextLine();
+                    location = input.nextLine();
+
+                    var museum = new Museum(id, name, location);
+
+                    // System.out.println(STR."Museum #\{museum.id()} lagt til (\{museum.name()}, \{museum.location()})");
+
+                    museums.add(museum);
                 }
 
                 //# Alt som omhandler gjenstander i txt-filen
@@ -138,6 +153,8 @@ public class MyScanner
         }
 
         System.out.println("\n//$ Parsing of Funn.txt is done.");
+        System.out.println(STR."//$ \{people.size()} people added from .txt-file");
+        System.out.println(STR."//$ \{museums.size()} museums added from .txt-file");
     }
 
     int convertToNumber(String text) {

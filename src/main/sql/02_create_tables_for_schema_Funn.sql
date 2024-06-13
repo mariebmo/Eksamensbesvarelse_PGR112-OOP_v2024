@@ -1,19 +1,19 @@
 USE Funn;
 
-CREATE TABLE person (
+CREATE TABLE IF NOT EXISTS person (
     id INT PRIMARY KEY,
     navn VARCHAR(255),
     tlf VARCHAR(12),
     e_post VARCHAR(255)
 );
 
-CREATE TABLE museum (
+CREATE TABLE IF NOT EXISTS museum (
     id INT PRIMARY KEY,
     navn VARCHAR(255),
     sted VARCHAR(255)
 );
 
-CREATE TABLE vaapen (
+CREATE TABLE IF NOT EXISTS vaapen (
     id INT PRIMARY KEY,
     funnsted VARCHAR(255),
     finner_id INT,
@@ -27,7 +27,7 @@ CREATE TABLE vaapen (
     FOREIGN KEY (museum_id) REFERENCES Museum(id)
 );
 
-CREATE TABLE smykke (
+CREATE TABLE IF NOT EXISTS smykke (
     id INT PRIMARY KEY,
     funnsted VARCHAR(255),
     finner_id INT,
@@ -41,7 +41,7 @@ CREATE TABLE smykke (
     FOREIGN KEY (museum_id) REFERENCES Museum(id)
 );
 
-CREATE TABLE mynt (
+CREATE TABLE IF NOT EXISTS mynt (
     id INT PRIMARY KEY,
     funnsted VARCHAR(255),
     finner_id INT,

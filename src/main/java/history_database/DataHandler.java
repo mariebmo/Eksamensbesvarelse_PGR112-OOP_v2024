@@ -83,12 +83,71 @@ public class DataHandler
 
     // Methods for printing info about items in Database (that is saved in local memory)
     void printAllCoins() {
+        System.out.println("*** MYNTER FUNNET ***");
+        int count = 1;
         for (FoundItem item : itemsInDatabase) {
+            if (item instanceof ItemCoin) {
+                ItemCoin coin = (ItemCoin) item;
 
-            if (item.type.equals("Mynt")) {
-                System.out.println(item);
+                System.out.print(STR."Mynt #\{count} fra rundt år \{coin.expectedYearOfCreation} (ID: \{coin.id}). ");
+                System.out.println(STR."Funnet av \{getPersonNameBasedOnID(coin.finder_id)} i \{coin.dateFound.substring(0,4)}.");
+                System.out.println(STR."- \{coin.getDiameter()} mm i diameter og lagd av \{coin.getMetal().toLowerCase()}.");
+                if (coin.museum_id != 0) {
+                    System.out.println(STR."- For øyeblikket utstilt på \{getMuseumNameBasedOnID(coin.museum_id)}.");
+                } else {
+                    System.out.println("- Ikke utstilt på museum for øyeblikket. Så ligger i en boks i kjelleren på klubbhuset.");
+                }
+                System.out.println("");
+
+                count++;
             }
         }
+    }
+
+    void printAllJewelry() {
+        System.out.println("*** SMYKKER FUNNET ***");
+        int count = 1;
+
+        for (FoundItem item : itemsInDatabase) {
+            if (item instanceof ItemJewelry) {
+                ItemJewelry jewelry = (ItemJewelry) item;
+
+                System.out.print(STR."Smykke #\{count}, \{jewelry.getJewelryType()} fra rundt år \{jewelry.expectedYearOfCreation} (ID: \{jewelry.id}). ");
+                System.out.println(STR."Funnet av \{getPersonNameBasedOnID(jewelry.finder_id)} i \{jewelry.dateFound.substring(0,4)}.");
+                System.out.println(STR."- Verdi estimert til \{jewelry.getValueEstimate()} kroner (se bilde: \{jewelry.getImageFilename()}).");
+                if (jewelry.museum_id != 0) {
+                    System.out.println(STR."- For øyeblikket utstilt på \{getMuseumNameBasedOnID(jewelry.museum_id)}.");
+                } else {
+                    System.out.println("- Ikke utstilt på museum for øyeblikket. Så ligger i safen på klubbhuset.");
+                }
+                System.out.println("");
+                count++;
+
+            }
+        }
+    }
+
+    void printAllWeapons() {
+
+    }
+
+
+    private String getPersonNameBasedOnID(int person_id) {
+        for (Person person : peopleInDatabase) {
+            if (person.id() == person_id) {
+                return person.name();
+            }
+        }
+        return null;
+    }
+
+    private String getMuseumNameBasedOnID(int museum_id) {
+        for (Museum museum : museumsInDatabase) {
+            if(museum.id() == museum_id) {
+                return museum.name();
+            }
+        }
+        return null;
     }
 
     // Methods for loading data from database into program at start

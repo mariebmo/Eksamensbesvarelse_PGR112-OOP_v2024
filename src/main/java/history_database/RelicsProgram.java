@@ -63,6 +63,7 @@ public class RelicsProgram
         System.out.println("Oversikt over alt vi har... Det er mye det...\n");
 
         printAllCoins();
+        printAllJewelry();
 
         printDivider();
 
@@ -82,6 +83,7 @@ public class RelicsProgram
     private void printAllCoins() {
         data.printAllCoins();
     }
+    private void printAllJewelry() { data.printAllJewelry(); }
 
     //
     private void printDivider() {

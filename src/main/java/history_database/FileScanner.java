@@ -8,7 +8,7 @@ import java.util.Scanner;
 /*
     Deler av koden i denne klassen er basert på kode fra Marcus Alexander Dahl i filen:
     https://github.com/kristiania/PGR112v24/code/lectures/_24/Progress.java
- */
+*/
 
 public class FileScanner
 {
@@ -21,7 +21,6 @@ public class FileScanner
     private ArrayList<ItemWeapon> weapons = new ArrayList<>();
     private ArrayList<ItemJewelry> trinkets = new ArrayList<>();
 
-
     // Constructor
     public FileScanner(Database database) {
         this.database = database;
@@ -32,19 +31,15 @@ public class FileScanner
     public ArrayList<Person> getPeople() {
         return people;
     }
-
     public ArrayList<Museum> getMuseums() {
         return museums;
     }
-
     public ArrayList<ItemCoin> getCoins() {
         return coins;
     }
-
     public ArrayList<ItemWeapon> getWeapons() {
         return weapons;
     }
-
     public ArrayList<ItemJewelry> getTrinkets() {
         return trinkets;
     }
@@ -60,7 +55,7 @@ public class FileScanner
         }
     }
 
-    void parseFile() {
+    private void parseFile() {
         try (var input = new Scanner(text)) {
 
             String line;
@@ -239,8 +234,7 @@ public class FileScanner
 
     }
 
-    int convertToNumber(String text) {
+    private int convertToNumber(String text) {
         return Integer.parseInt(text);
     }
-
 }

@@ -8,13 +8,16 @@ public class ItemJewelry extends FoundItem
     private String imageFilename;
 
     //# Constructor
-    public ItemJewelry(int id, String placeDiscovered, int finder_id, String dateFound, int expectedYearOfCreation, String type, String jewelryType, int valueEstimate, String imageFilename) {
+    public ItemJewelry(int id, String placeDiscovered, int finder_id, String dateFound,
+                       int expectedYearOfCreation, String type, String jewelryType, int valueEstimate, String imageFilename) {
         super(id, placeDiscovered, finder_id, dateFound, expectedYearOfCreation, type);
         this.jewelryType = jewelryType;
         this.valueEstimate = valueEstimate;
         this.imageFilename = imageFilename;
     }
-    public ItemJewelry(int id, String placeDiscovered, int finder_id, String dateFound, int expectedYearOfCreation, int museum_id, String type, String jewelryType, int valueEstimate, String imageFilename) {
+    public ItemJewelry(int id, String placeDiscovered, int finder_id, String dateFound,
+                       int expectedYearOfCreation, int museum_id, String type, String jewelryType,
+                       int valueEstimate, String imageFilename) {
         super(id, placeDiscovered, finder_id, dateFound, expectedYearOfCreation, museum_id, type);
         this.jewelryType = jewelryType;
         this.valueEstimate = valueEstimate;

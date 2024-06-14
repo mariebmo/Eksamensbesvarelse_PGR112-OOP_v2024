@@ -496,7 +496,6 @@ public class DataHandler {
 
     private void loadPeopleFromDatabase() {
         try (Connection connection = database.getConnection()) {
-
             peopleInDatabase.clear();
 
             Statement statement = connection.createStatement();
@@ -510,10 +509,8 @@ public class DataHandler {
                         resultSet.getInt("tlf"),
                         resultSet.getString("e_post")
                 );
-
                 peopleInDatabase.add(person);
             }
-
         } catch (SQLException e) {
             System.out.println("Could not load people from database");
             throw new RuntimeException(e);

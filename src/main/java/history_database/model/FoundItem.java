@@ -1,4 +1,4 @@
-package history_database;
+package history_database.model;
 
 public abstract class FoundItem
 {
@@ -13,23 +13,13 @@ public abstract class FoundItem
 
     //# Constructor
     // Konstruktør for om museums_id IKKE finnes
-    public FoundItem(int id, String placeDiscovered, int finder_id, String dateFound, int expectedYearOfCreation, String type) {
-        this.id = id;
-        this.placeDiscovered = placeDiscovered;
-        this.finder_id = finder_id;
-        this.dateFound = dateFound;
-        this.expectedYearOfCreation = expectedYearOfCreation;
-        this.museum_id = 0;
-        this.type = type;
-    }
-    // Konstruktør for om museums_id finnes
     public FoundItem(int id, String placeDiscovered, int finder_id, String dateFound, int expectedYearOfCreation, int museum_id, String type) {
         this.id = id;
         this.placeDiscovered = placeDiscovered;
         this.finder_id = finder_id;
         this.dateFound = dateFound;
         this.expectedYearOfCreation = expectedYearOfCreation;
-        this.museum_id = museum_id;
+        this.museum_id = museum_id ? museum_id : -1;
         this.type = type;
     }
 

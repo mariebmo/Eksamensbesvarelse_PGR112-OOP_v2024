@@ -5,6 +5,12 @@ import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.Scanner;
 
+import history_database.model.ItemCoin;
+import history_database.model.ItemJewelry;
+import history_database.model.ItemWeapon;
+import history_database.model.Museum;
+import history_database.model.Person;
+
 /*
     Deler av koden i denne klassen er basert på kode fra Marcus Alexander Dahl i filen:
     https://github.com/kristiania/PGR112v24/code/lectures/_24/Progress.java
@@ -13,7 +19,6 @@ import java.util.Scanner;
 public class FileScanner
 {
     //# Fields
-    private Database database;
     private File text;
     private ArrayList<Person> people = new ArrayList<>();
     private ArrayList<Museum> museums = new ArrayList<>();
@@ -22,8 +27,7 @@ public class FileScanner
     private ArrayList<ItemJewelry> trinkets = new ArrayList<>();
 
     // Constructor
-    public FileScanner(Database database) {
-        this.database = database;
+    public FileScanner() {
         this.text = new File("src/main/resources/funn.txt");
     }
 
@@ -42,6 +46,14 @@ public class FileScanner
     }
     public ArrayList<ItemJewelry> getTrinkets() {
         return trinkets;
+    }
+
+    public ArrayList<FoundItem> getItems(){
+        ArrayList<FoundItem> items = new ArrayList<>();
+        items.addAll(coins);
+        items.addAll(weapons);
+        items.addAll(trinkets);
+        return items;
     }
 
     //# Methods
@@ -156,7 +168,7 @@ public class FileScanner
                     expectedYearOfCreation = convertToNumber(input.nextLine());
                     String possibleMuseum = input.nextLine();
                     if (possibleMuseum.isEmpty()) {
-                        museum_id = 0;
+                        museum_id = null;
                     } else {
                         museum_id = convertToNumber(possibleMuseum);
                     }
@@ -167,14 +179,7 @@ public class FileScanner
                         coinDiameter = convertToNumber(input.nextLine());
                         coinMetal = input.nextLine();
 
-                        ItemCoin coin;
-
-                        if (museum_id == 0) {
-                            coin = new ItemCoin(id,coordinates,finder_id,dateFound,expectedYearOfCreation,type,coinDiameter,coinMetal);
-                        } else {
-                            coin = new ItemCoin(id,coordinates,finder_id,dateFound,expectedYearOfCreation,museum_id,type,coinDiameter,coinMetal);
-                        }
-
+                        ItemCoin coin = new ItemCoin(id,coordinates,finder_id,dateFound,expectedYearOfCreation,museum_id,type,coinDiameter,coinMetal);
                         coins.add(coin);
 
                         if (input.nextLine().contains("-")) {
@@ -188,14 +193,7 @@ public class FileScanner
                         weaponMaterial = input.nextLine();
                         weaponWeight = convertToNumber(input.nextLine());
 
-                        ItemWeapon weapon;
-
-                        if (museum_id == 0) {
-                            weapon = new ItemWeapon(id,coordinates,finder_id,dateFound,expectedYearOfCreation, type, weaponType, weaponMaterial, weaponWeight);
-                        } else {
-                            weapon = new ItemWeapon(id,coordinates,finder_id,dateFound,expectedYearOfCreation,museum_id,type, weaponType, weaponMaterial, weaponWeight);
-                        }
-
+                        ItemWeapon weapon = new ItemWeapon(id,coordinates,finder_id,dateFound,expectedYearOfCreation,museum_id,type, weaponType, weaponMaterial, weaponWeight);
                         weapons.add(weapon);
 
                         if (input.nextLine().contains("-")) {
@@ -209,14 +207,7 @@ public class FileScanner
                         jewelryValue = convertToNumber(input.nextLine());
                         jewelryImagePath = input.nextLine();
 
-                        ItemJewelry jewelry;
-
-                        if (museum_id == 0) {
-                            jewelry = new ItemJewelry(id,coordinates,finder_id,dateFound,expectedYearOfCreation, type, jewelryType, jewelryValue, jewelryImagePath);
-                        } else {
-                            jewelry = new ItemJewelry(id,coordinates,finder_id,dateFound,expectedYearOfCreation,museum_id,type, jewelryType, jewelryValue, jewelryImagePath);
-                        }
-
+                        ItemJewelry jewelry = new ItemJewelry(id,coordinates,finder_id,dateFound,expectedYearOfCreation,museum_id,type, jewelryType, jewelryValue, jewelryImagePath);
                         trinkets.add(jewelry);
 
                         if (input.nextLine().contains("-")) {

@@ -1,4 +1,4 @@
-package history_database;
+package history_database.model;
 
 public class ItemWeapon extends FoundItem
 {
@@ -7,15 +7,6 @@ public class ItemWeapon extends FoundItem
     private String material;
     private int weight;
 
-    //# Constructor
-    // When there is NOT a museum_id
-    public ItemWeapon(int id, String placeDiscovered, int finder_id, String dateFound,
-                      int expectedYearOfCreation, String type, String weaponType, String material, int weight) {
-        super(id, placeDiscovered, finder_id, dateFound, expectedYearOfCreation, type);
-        this.weaponType = weaponType;
-        this.material = material;
-        this.weight = weight;
-    }
     // When there is a museum_id
     public ItemWeapon(int id, String placeDiscovered, int finder_id, String dateFound,
                       int expectedYearOfCreation, int museum_id, String type, String weaponType,
